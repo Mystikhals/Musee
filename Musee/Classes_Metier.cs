@@ -347,7 +347,10 @@ namespace Musee
         // Constructeur : création d'un musée
         public Musee(string nom)
         {
-            // A COMPLETER
+            this.monMusee = nom;
+            this.lesArtistes = new List<Artiste>();
+            this.lesSalles = new List<Salle>();
+            this.lesOeuvres = new List<Oeuvre>();
         }
 
         // Création d'une SALLE
