@@ -228,15 +228,21 @@ namespace Musee
         // Constructeur (+ surcharges)
         public Salle(string nomSalle, float montant)
         {
-            // A COMPLETER
+            this.nomSalle = nomSalle;
+            this.montantAssurance = montant;
+            this.lesOeuvres = new List<Oeuvre>();
         }
         public Salle(Salle s)
         {
-            // A COMPLETER
+            this.nomSalle = s.GetNomSalle();
+            this.montantAssurance = s.GetMontantAssurance();
+            this.lesOeuvres = new List<Oeuvre>();
         }
         public Salle(string nomSalle, float montant, List<Oeuvre> l)
         {
-            // A COMPLETER
+            this.nomSalle = nomSalle;
+            this.montantAssurance = montant;
+            this.lesOeuvres = l;
         }
 
         // Accesseurs sur le nom de la salle et le montant de l'assureance
@@ -256,7 +262,13 @@ namespace Musee
         // Retourne l’oeuvre dont le nom est passé en paramètre ou "null" sinon trouvée.
         public Oeuvre GetOeuvre(string nom)
         {
-            // A COMPLETER
+            foreach (Oeuvre o in this.lesOeuvres)
+            {
+                if (o.GetNomOeuvre().Equals(nom))
+                {
+                    return o;
+                }
+            }
             return null;
         }
 
@@ -264,13 +276,31 @@ namespace Musee
         // (+ surcharge)
         public bool ExisteOeuvre(string nom)
         {
-            // A COMPLETER
-            return true;
+            if (nom != null)
+            {
+                foreach (Oeuvre o in this.lesOeuvres)
+                {
+                    if (o.GetNomOeuvre().Equals(nom))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         public bool ExisteOeuvre(Oeuvre uneOeuvre)
         {
-            // A COMPLETER
-            return true;
+            if (uneOeuvre != null)
+            {
+                foreach (Oeuvre o in this.lesOeuvres)
+                {
+                    if (o.GetNomOeuvre().Equals(uneOeuvre.GetNomOeuvre()))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // INDEXEURS en LECTURE (=accès à(aux) oeuvre(s) de la salle)
@@ -301,7 +331,7 @@ namespace Musee
         // Retourne la valeur totale des oeuvres stockées dans la salle
         public double ValeurSalle()
         {
-            // A COMPLETER
+            
             return 0F;
         }
 
@@ -356,14 +386,14 @@ namespace Musee
         // Création d'une SALLE
         public string CreerSalle(Salle s)
         {
-            // A COMPLETER
+            this.lesSalles.Add(s);
             return null;
         }
 
         // Création d'un ARTISTE
         public string CreerArtiste(Artiste a)
         {
-            // A COMPLETER
+            this.lesArtistes.Add(a);
             return null;
         }
 
@@ -371,12 +401,12 @@ namespace Musee
         // (+ surcharge : OEUVRE avec l'ARTISTE déjà défini)
         public string CreerOeuvre(Oeuvre o, Artiste a, Salle s)
         {
-            // A COMPLETER
+            o.SetArtiste(a);
             return null;
         }
         public string CreerOeuvre(Oeuvre o, Salle s)
         {
-            // A COMPLETER
+            
             return null;
         }
 
