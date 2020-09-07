@@ -11,7 +11,11 @@
         // d'une collection d'OEUVRES pour une SALLE...
         public static bool RechercheOeuvresArtiste(Oeuvre o)
         {
-            // A COMPLETER
+            if (o.GetArtiste().GetNomArtiste().Equals(nomArtiste))
+            {
+                return true;
+            }
+            return false;
         }
 
         // Méthodes de COMPARAISON (pour "Sort()") entre deux objets OEUVRE ACHETEE
@@ -21,11 +25,19 @@
         //      -1 = si o1 < o2
         public static int ComparerOeuvresParNom(Oeuvre o1, Oeuvre o2)
         {
-            // A COMPLETER
+            if (o1.GetNomOeuvre().Length < o2.GetNomOeuvre().Length)
+            {
+                return -1;
+            } else if (o1.GetNomOeuvre().Length == o2.GetNomOeuvre().Length)
+            {
+                return 0;
+            }
+            return 1;
+
         }
         public static int ComparerOeuvresParPrix(Oeuvre o1, Oeuvre o2)
         {
-            // A COMPLETER
+         
         }
     }
 }
