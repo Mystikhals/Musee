@@ -37,7 +37,7 @@
         }
         public static int ComparerOeuvresParPrix(Oeuvre o1, Oeuvre o2)
         {
-         
+            return 1;
         }
     }
 }

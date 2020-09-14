@@ -87,3 +87,4 @@ G:\EN COURS\PPE\Musee des Célestins\3. Musee d'art - A FOURNIR\Musee\obj\x86\De
 G:\EN COURS\PPE\Musee des Célestins\3. Musee d'art - A FOURNIR\Musee\obj\x86\Debug\Musee.pdb
 C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.exe
 C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.pdb
+C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.csprojResolveAssemblyReference.cache

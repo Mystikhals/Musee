@@ -113,7 +113,7 @@ namespace Musee
     #endregion
 
     #region Classe OEUVRE ACHETEE
-    public class Oeuvre_Achetee
+    public class Oeuvre_Achetee : Oeuvre
     {
         // Attributs spécifiques
         private float prixOeuvre;
@@ -123,21 +123,40 @@ namespace Musee
         private bool aExpertiser;
 
         // Constructeur (+surcharges)
-        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat)
+        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat) : base(nom)
         {
-            // A COMPLETER
+            this.SetNomOeuvre(nom);
+            this.SetPrixOeuvre(prix);
+            this.dateAchat = achat;
+            this.dateDerniereExpertise = expertise;
+            this.etat = etat;
+
         }
-        public Oeuvre_Achetee(string nom, float prix, Etat_Oeuvre etat)  //  Date achat et Date expertise = Date courante
-        { 
-            // A COMPLETER
-        }
-        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat, Artiste a)
+        public Oeuvre_Achetee(string nom, float prix, Etat_Oeuvre etat) : base(nom)  //  Date achat et Date expertise = Date courante
         {
-            // A COMPLETER 
+            this.SetNomOeuvre(nom);
+            this.SetPrixOeuvre(prix);
+            this.etat = etat;
         }
-        public Oeuvre_Achetee(Oeuvre o)
+        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat, Artiste a) : base(nom, a)
         {
-            // A COMPLETER
+            this.SetNomOeuvre(nom);
+            this.SetPrixOeuvre(prix);
+            this.dateAchat = achat;
+            this.dateDerniereExpertise = expertise;
+            this.etat = etat;
+            this.SetArtiste(a);
+        }
+        public Oeuvre_Achetee(Oeuvre o) : base(o)
+        {
+
+            this.SetNomOeuvre(o.GetNomOeuvre());
+            this.SetArtiste(o.GetArtiste());
+            this.aExpertiser = true;
+            this.prixOeuvre = 0.0F;
+            this.dateAchat = DateTime.Now;
+            this.dateDerniereExpertise = DateTime.Now;
+            this.etat = null;
         }
 
         // Accesseurs
@@ -149,15 +168,19 @@ namespace Musee
         // Méthode permettant de savoir si une oeuvre est à expertiser.
         public bool estAExpertiser()
         {
-            // A COMPLETER
-            return true;
+            DateTime expiryDate = dateDerniereExpertise.AddDays(30);
+            if (DateTime.Now > expiryDate)
+            {
+                return true;
+            }
+            return false;
         }
 
         // Formatage une chaine avec les informations de l'oeuvre
         // A COMPLETER
-        public string ToString()
+        public new string ToString()
         {
-            string aRetourner="";
+            string aRetourner = "";
             aRetourner += string.Format("\n\tAchetée le {0} et expertisée le {1}\n", this.dateAchat.ToShortDateString(), this.dateDerniereExpertise.ToShortDateString());
             aRetourner += string.Format("\tEtat {0}\n", this.etat.getLibelleEtatOeuvre());
             aRetourner += string.Format("\tPour {0} euros\n", this.prixOeuvre);
@@ -268,8 +291,7 @@ namespace Musee
                 {
                     return o;
                 }
-            }
-            return null;
+            } return null;
         }
 
         // Retourne vrai si l'Oeuvre dont le nom est passé en paramètre existe dans la salle, faux sinon.
@@ -357,9 +379,12 @@ namespace Musee
         public override string  ToString()
         {
             string résultat = "";
-
-            // A COMPLETER
-
+            résultat += "********** Salle " + this.GetNomSalle() + " **********\n"
+                + "Montant de l'assurance\n\n";
+            foreach (Oeuvre o in this.lesOeuvres)
+            {
+                résultat += o.ToString() + " : " + o.GetArtiste().ToString();
+            }
             return résultat;
         }
     }
@@ -424,7 +449,7 @@ namespace Musee
         }
         public Oeuvre GetOeuvre(int i)
         {
-            // A COMPLETER
+            
             return null;
         }
         public Salle GetSalle(int i)
