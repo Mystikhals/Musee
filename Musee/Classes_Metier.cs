@@ -342,7 +342,58 @@ namespace Musee
         // * Sur la référence (objet) artiste(retourne toutes les oeuvres de l'artiste cherché)
         // * Sur le nom d'un artiste (retourne toutes les oeuvres de l'artiste cherché)
 
-        // A ECRIRE (4 indexeurs)
+        public Oeuvre this[int index]
+        {
+            get { return this.lesOeuvres[index]; }
+        }
+
+        public List<Oeuvre> this[float prix]
+        {
+            get
+            {
+                List<Oeuvre> listRetour = new List<Oeuvre>();
+                foreach (Oeuvre_Achetee o in this.lesOeuvres)
+                {
+                    if (o.GetPrixOeuvre() <= prix)
+                    {
+                        listRetour.Add(o);
+                    }
+                }
+                return listRetour;
+            }
+        }
+
+        public List<Oeuvre> this[Artiste art]
+        {
+            get
+            {
+                List<Oeuvre> listRetour = new List<Oeuvre>();
+                foreach (Oeuvre o in this.lesOeuvres)
+                {
+                    if (o.GetArtiste() == art)
+                    {
+                        listRetour.Add(o);
+                    }
+                }
+                return listRetour;
+            }
+        }
+
+        public List<Oeuvre> this[String nomArtiste]
+        {
+            get
+            {
+                List<Oeuvre> listRetour = new List<Oeuvre>();
+                foreach (Oeuvre o in this.lesOeuvres)
+                {
+                    if (o.GetArtiste().GetNomArtiste().Equals(nomArtiste))
+                    {
+                        listRetour.Add(o);
+                    }
+                }
+                return listRetour;
+            }
+        }
 
 
         // Ajoute une Oeuvre dans la salle, 
