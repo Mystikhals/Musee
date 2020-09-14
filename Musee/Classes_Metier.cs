@@ -75,11 +75,13 @@ namespace Musee
         }
         public Oeuvre(string nom, Artiste a)
         {
-            // A COMPLETER
+            this.nomOeuvre = nom;
+            this.artisteOeuvre = a;
         }
         public Oeuvre(Oeuvre o)
         {
-            // A COMPLETER
+            this.nomOeuvre = o.nomOeuvre;
+            this.artisteOeuvre = o.artisteOeuvre;
         }
 
         // Accesseurs
@@ -93,7 +95,7 @@ namespace Musee
         { return this.artisteOeuvre; }
         public void SetArtiste(Artiste a)
         {
-            // A COMPLETER
+            this.artisteOeuvre = a;
         }
 
         // Méthode redéfinie dans les classes DERIVEES
@@ -113,7 +115,7 @@ namespace Musee
     #endregion
 
     #region Classe OEUVRE ACHETEE
-    public class Oeuvre_Achetee
+    public class Oeuvre_Achetee : Oeuvre
     {
         // Attributs spécifiques
         private float prixOeuvre;
@@ -123,21 +125,37 @@ namespace Musee
         private bool aExpertiser;
 
         // Constructeur (+surcharges)
-        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat)
+        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat) : base(nom)
         {
-            // A COMPLETER
+            this.SetNomOeuvre(nom);
+            this.prixOeuvre = prix;
+            this.dateAchat = achat;
+            this.dateDerniereExpertise = expertise;
+            this.etat = etat;
+            
         }
-        public Oeuvre_Achetee(string nom, float prix, Etat_Oeuvre etat)  //  Date achat et Date expertise = Date courante
-        { 
-            // A COMPLETER
-        }
-        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat, Artiste a)
+        public Oeuvre_Achetee(string nom, float prix, Etat_Oeuvre etat) : base(nom)
         {
-            // A COMPLETER 
+            this.SetNomOeuvre(nom);
+            this.prixOeuvre = prix;
+            this.dateAchat = DateTime.Now;
+            this.dateDerniereExpertise = DateTime.Now;
+            this.etat = etat;
         }
-        public Oeuvre_Achetee(Oeuvre o)
+        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat, Artiste a) : base(nom,a)
         {
-            // A COMPLETER
+            this.SetNomOeuvre(nom);
+            this.prixOeuvre = prix;
+            this.dateAchat = achat;
+            this.dateDerniereExpertise = expertise;
+            this.etat = etat;
+            this.SetArtiste(a);
+        }
+        public Oeuvre_Achetee(Oeuvre o) : base(o)
+        {
+            this.SetArtiste(o.GetArtiste());
+            this.SetNomOeuvre(o.GetNomOeuvre());
+            
         }
 
         // Accesseurs
@@ -149,13 +167,19 @@ namespace Musee
         // Méthode permettant de savoir si une oeuvre est à expertiser.
         public bool estAExpertiser()
         {
-            // A COMPLETER
-            return true;
+            if (DateTime.Now > dateDerniereExpertise.AddDays(30)) 
+            {
+                this.aExpertiser = true;
+            }
+            if (this.aExpertiser == true)
+                return true;
+            else
+                return false;
         }
 
         // Formatage une chaine avec les informations de l'oeuvre
         // A COMPLETER
-        public string ToString()
+        public new string ToString()
         {
             string aRetourner="";
             aRetourner += string.Format("\n\tAchetée le {0} et expertisée le {1}\n", this.dateAchat.ToShortDateString(), this.dateDerniereExpertise.ToShortDateString());
@@ -168,7 +192,7 @@ namespace Musee
     #endregion
 
     #region Classe OEUVRE PRETEE
-    public class Oeuvre_Pretee
+    public class Oeuvre_Pretee : Oeuvre
     {
         // Attribut spécifique
         private string preteur;
@@ -179,17 +203,28 @@ namespace Musee
         // Pour la dernière surcharge : 
         //  * Les dates seront initialisées à la date courante
         //  * Le prêteur sera initialisé à "inconnu"
-        public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin)
+        public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin) : base(nom)
         {
-            // A COMPLETER
+            this.SetNomOeuvre(nom);
+            this.preteur = preteur;
+            this.date_debut = debut;
+            this.date_fin = fin;
         }
-        public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin, Artiste a)
+        public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin, Artiste a) : base(nom,a)
         {
-            // A COMPLETER
+            this.SetNomOeuvre(nom);
+            this.preteur = preteur;
+            this.date_debut = debut;
+            this.date_fin = fin;
+            this.SetArtiste(a);
         }
-        public Oeuvre_Pretee(Oeuvre o)
+        public Oeuvre_Pretee(Oeuvre o) : base(o)
         {
-            // A COMPLETER
+            o.SetNomOeuvre(o.GetNomOeuvre());
+            o.SetArtiste(o.GetArtiste());
+            this.preteur = "inconnu";
+            this.date_debut = DateTime.Now;
+            this.date_fin = DateTime.Now;
         }
 
         // Accesseurs
@@ -203,12 +238,13 @@ namespace Musee
         { this.preteur = p; }
         public void setDates(DateTime[] dates)
         {
-            // A COMPLETER
+            this.date_debut = dates[0];
+            this.date_fin = dates[1];
         }
 
         // Formatage une chaine avec les informations de l'oeuvre
         // A COMPLETER
-        public string ToString()
+        public new string ToString()
         {
             string aRetourner = "";
             aRetourner += string.Format("\n\tPrêtée par {0} pour {1} jours\n", this.preteur, (this.date_fin - this.date_debut).Days);
@@ -228,15 +264,21 @@ namespace Musee
         // Constructeur (+ surcharges)
         public Salle(string nomSalle, float montant)
         {
-            // A COMPLETER
+            this.nomSalle = nomSalle;
+            this.montantAssurance = montant;
+            this.lesOeuvres = new List<Oeuvre>();
         }
         public Salle(Salle s)
         {
-            // A COMPLETER
+            this.nomSalle = s.nomSalle;
+            this.montantAssurance = s.montantAssurance;
+            this.lesOeuvres = s.lesOeuvres;
         }
         public Salle(string nomSalle, float montant, List<Oeuvre> l)
         {
-            // A COMPLETER
+            this.nomSalle = nomSalle;
+            this.montantAssurance = montant;
+            this.lesOeuvres = l;
         }
 
         // Accesseurs sur le nom de la salle et le montant de l'assureance
@@ -256,7 +298,14 @@ namespace Musee
         // Retourne l’oeuvre dont le nom est passé en paramètre ou "null" sinon trouvée.
         public Oeuvre GetOeuvre(string nom)
         {
-            // A COMPLETER
+            foreach (Oeuvre o in lesOeuvres) 
+            {
+                if (o.GetNomOeuvre() == nom) 
+                {
+                    return o;
+                }
+            
+            }
             return null;
         }
 
@@ -264,13 +313,27 @@ namespace Musee
         // (+ surcharge)
         public bool ExisteOeuvre(string nom)
         {
-            // A COMPLETER
-            return true;
+            foreach (Oeuvre o in lesOeuvres)
+            {
+                if (o.GetNomOeuvre() == nom)
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
         public bool ExisteOeuvre(Oeuvre uneOeuvre)
         {
-            // A COMPLETER
-            return true;
+            foreach (Oeuvre o in lesOeuvres)
+            {
+                if (o.GetNomOeuvre() == uneOeuvre.GetNomOeuvre())
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
 
         // INDEXEURS en LECTURE (=accès à(aux) oeuvre(s) de la salle)
@@ -286,23 +349,35 @@ namespace Musee
         // Retourne vrai si l’ajout a eu lieu, faux si l'œuvre existe déjà.
         public bool AjouteOeuvre(Oeuvre uneOeuvre)
         {
-            // A COMPLETER
-            return true;
+            if (!ExisteOeuvre(uneOeuvre)) 
+            {
+                return true;
+            }
+            return false;
         }
 
         // Enlève une Oeuvre dans la salle.
         // Retourne vrai si le retrait a eu lieu, faux si l'œuvre n'existe pas.
         public bool RetireOeuvre(Oeuvre uneOeuvre)
         {
-            // A COMPLETER
-            return true;
+            if (ExisteOeuvre(uneOeuvre))
+            {
+                lesOeuvres.Remove(uneOeuvre);
+                return true;
+            }
+            return false;
         }
 
         // Retourne la valeur totale des oeuvres stockées dans la salle
         public double ValeurSalle()
         {
-            // A COMPLETER
-            return 0F;
+            float total = 0F;
+            foreach (Oeuvre_Achetee o in lesOeuvres)
+            {
+                total += o.GetPrixOeuvre();
+
+            }
+            return total;
         }
 
         // Retourne l’écart entre le montant de la valeur déclarée 
@@ -311,15 +386,23 @@ namespace Musee
         // (=que des oeuvres prêtées) alors on retourne ZERO.
         public double Ecart()
         {
-            // A COMPLETER
-            return 0F;
+            float total;
+            total = (float)ValeurSalle() - this.GetMontantAssurance(); 
+            return total;
         }
 
         // Retourne l'ensemble des oeuvres devant faire l'objet d'une expertise
         public List<Oeuvre_Achetee> getLesOeuvresAExpertiser()
         {
-            // A COMPLETER
-            return null;
+            List<Oeuvre_Achetee> AExpertiser = new List<Oeuvre_Achetee>();
+            foreach (Oeuvre_Achetee o in lesOeuvres)
+            {
+                if (o.estAExpertiser()) 
+                {
+                    AExpertiser.Add(o);
+                }
+            }
+            return AExpertiser;
         }
 
         // Retourne une chaîne avec les caractéristiques de la salle 
@@ -327,9 +410,8 @@ namespace Musee
         public override string  ToString()
         {
             string résultat = "";
-
-            // A COMPLETER
-
+            résultat += ("La Salle "+this.nomSalle);
+            résultat += ("Contient des Oeuvre assurer pour un montant de " + this.montantAssurance + "$");
             return résultat;
         }
     }
@@ -356,27 +438,31 @@ namespace Musee
         // Création d'une SALLE
         public string CreerSalle(Salle s)
         {
-            // A COMPLETER
-            return null;
+            Salle uneSalle = new Salle(s);
+            lesSalles.Add(s);
+            return "Salle ajouter avec succès";
         }
 
         // Création d'un ARTISTE
         public string CreerArtiste(Artiste a)
         {
-            // A COMPLETER
-            return null;
+            Artiste unArtiste = new Artiste(a);
+            lesArtistes.Add(a);
+            return "Artiste creer avec succès";
         }
 
         // Création d'une OEUVRE avec un ARTISTE et une SALLE
         // (+ surcharge : OEUVRE avec l'ARTISTE déjà défini)
         public string CreerOeuvre(Oeuvre o, Artiste a, Salle s)
         {
-            // A COMPLETER
+            Oeuvre oeuvre = new Oeuvre(o.GetNomOeuvre(), a);
+            s.AjouteOeuvre(oeuvre);
             return null;
         }
         public string CreerOeuvre(Oeuvre o, Salle s)
         {
-            // A COMPLETER
+            Oeuvre oeuvre = new Oeuvre(o);
+            s.AjouteOeuvre(o);
             return null;
         }
 
@@ -389,18 +475,15 @@ namespace Musee
         { return this.lesArtistes; }
         public Artiste GetArtiste(int i)
         {
-            // A COMPLETER
-            return null;
+            return this.lesArtistes[i];
         }
         public Oeuvre GetOeuvre(int i)
         {
-            // A COMPLETER
-            return null;
+            return this.lesOeuvres[i];
         }
         public Salle GetSalle(int i)
         {
-            // A COMPLETER
-            return null;
+            return this.lesSalles[i];
         }
 
         // Retourne une collection DICTIONNAIRE avec la liste des OEUVRES
@@ -410,8 +493,24 @@ namespace Musee
         //  * Valeur associée : collection d'oeuvres à expertiser
         public Dictionary<Salle, List<Oeuvre_Achetee>> getLesExpertisesAFAire()
         {
-            // A COMPLETER
-            return null;
+            Dictionary<Salle, List<Oeuvre_Achetee>> dico = new Dictionary<Salle, List<Oeuvre_Achetee>>();
+            List<Oeuvre_Achetee> LesOeuvresaExpertiser = new List<Oeuvre_Achetee>();
+            // Boucle Erreur
+            foreach (Salle s in this.lesSalles)
+            {
+                foreach (Oeuvre_Achetee o in this.lesOeuvres)
+                {
+                    if (o.estAExpertiser() == true)
+                    {
+                        LesOeuvresaExpertiser.Add(o);
+
+
+                    }
+                }
+                dico.Add(s,LesOeuvresaExpertiser);
+            }
+
+            return dico;
         }
 
         // Formatte une chaîne avec les données du MUSEE
@@ -421,16 +520,34 @@ namespace Musee
             résultat += string.Format(" {0} \n", monMusee);
             résultat += string.Format("***********************************");
 
-            // A COMPLETER
+            
+            foreach (Artiste a in lesArtistes) 
+            {
+                résultat += a.GetNomArtiste();
+                résultat += string.Format("\n***********************************\n");
+            }
 
-            // Liste des ARTISTES
+            résultat += string.Format("\n***********************************\n");
+            résultat += string.Format("Les Oeuvres");
+            résultat += string.Format("\n***********************************\n");
+            
+            foreach (Oeuvre o in lesOeuvres) 
+            {
+                résultat += o.GetNomOeuvre();
+                résultat += string.Format("\n***********************************\n");
 
+            }
 
-            // Liste des OEUVRES
+            résultat += string.Format("\n***********************************\n");
+            résultat += string.Format("Les Salles");
+            résultat += string.Format("\n***********************************\n");
+            
+            foreach (Salle s in lesSalles)
+            {
+                résultat += s.GetNomSalle();
+                résultat += string.Format("\n***********************************\n");
 
-
-            // Liste et détail des SALLES
-
+            }
 
             return résultat;
         }
