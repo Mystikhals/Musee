@@ -16,7 +16,6 @@ namespace Musee
 
                 string nom = "Musee des Celestins - VICHY";
                 Musee celestins = new Musee(nom);
-                celestins.GetLesOeuvres().Find()
                 Console.WriteLine("*** Création du musee {0} ***\n", nom);
 
                 // -- Ajouter des ARTISTES

@@ -11,7 +11,7 @@
         // d'une collection d'OEUVRES pour une SALLE...
         public static bool RechercheOeuvresArtiste(Oeuvre o)
         {
-
+            // A COMPLETER
         }
 
         // Méthodes de COMPARAISON (pour "Sort()") entre deux objets OEUVRE ACHETEE
@@ -21,11 +21,11 @@
         //      -1 = si o1 < o2
         public static int ComparerOeuvresParNom(Oeuvre o1, Oeuvre o2)
         {
-
+            // A COMPLETER
         }
         public static int ComparerOeuvresParPrix(Oeuvre o1, Oeuvre o2)
         {
-
+            // A COMPLETER
         }
     }
 }

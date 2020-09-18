@@ -85,6 +85,9 @@ S:\Henri\Travail\PPE\1. Musee d'art\3. Musee d'art - A FOURNIR\Musee\obj\x86\Deb
 S:\Henri\Travail\PPE\1. Musee d'art\3. Musee d'art - A FOURNIR\Musee\obj\x86\Debug\Musee.pdb
 G:\EN COURS\PPE\Musee des Célestins\3. Musee d'art - A FOURNIR\Musee\obj\x86\Debug\Musee.exe
 G:\EN COURS\PPE\Musee des Célestins\3. Musee d'art - A FOURNIR\Musee\obj\x86\Debug\Musee.pdb
+C:\Users\siosl\Documents\ELBALI\S2SIO\SLAM\PPE\Musee d'art des Celestins\Musee\obj\x86\Debug\Musee.exe
+C:\Users\siosl\Documents\ELBALI\S2SIO\SLAM\PPE\Musee d'art des Celestins\Musee\obj\x86\Debug\Musee.pdb
+C:\Users\siosl\Documents\ELBALI\S2SIO\SLAM\PPE\Musee d'art des Celestins\Musee\obj\x86\Debug\Musee.csprojResolveAssemblyReference.cache
+C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.csprojResolveAssemblyReference.cache
 C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.exe
 C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.pdb
-C:\Users\siosl\Documents\ELBALI\PPE\Musée\Musee\obj\x86\Debug\Musee.csprojResolveAssemblyReference.cache

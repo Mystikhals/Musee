@@ -13,6 +13,7 @@ namespace Musee
         // Constructeur (+ surcharge)
         public Artiste(string nom, string nat)
         { this.nomArtiste = nom; this.nationalite = nat; }
+
         public Artiste(Artiste a)
         {
             if (a != null)
@@ -25,10 +26,13 @@ namespace Musee
         // Accesseurs
         public string GetNomArtiste()
         { return this.nomArtiste; }
+
         public string GetNationalité()
         { return this.nationalite; }
+
         public void SetNom(string nom)
         { this.nomArtiste = nom; }
+
         public void SetNationalité(string nat)
         { this.nationalite = nat; }
 
@@ -55,6 +59,7 @@ namespace Musee
         // Accesseurs
         public string getLibelleEtatOeuvre()
         { return this.libelle; }
+
         public int getNbJoursEntreExpertises()
         { return this.nbJoursEntreExpertises; }
     }
@@ -70,7 +75,7 @@ namespace Musee
         // Constructeur (+ surcharges)
         public Oeuvre(string nom)
         {
-            this.nomOeuvre = nom; 
+            this.nomOeuvre = nom;
             this.artisteOeuvre = null;
         }
         public Oeuvre(string nom, Artiste a)
@@ -99,7 +104,7 @@ namespace Musee
         }
 
         // Méthode redéfinie dans les classes DERIVEES
-        public new string ToString()
+        public override string ToString()
         {
             string résultat = "\t[";
             résultat += nomOeuvre;
@@ -127,35 +132,35 @@ namespace Musee
         // Constructeur (+surcharges)
         public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat) : base(nom)
         {
-            this.SetNomOeuvre(nom);
             this.prixOeuvre = prix;
             this.dateAchat = achat;
             this.dateDerniereExpertise = expertise;
             this.etat = etat;
-            
+            this.aExpertiser = false;
         }
-        public Oeuvre_Achetee(string nom, float prix, Etat_Oeuvre etat) : base(nom)
+        public Oeuvre_Achetee(string nom, float prix, Etat_Oeuvre etat) : base(nom)  //  Date achat et Date expertise = Date courante
         {
-            this.SetNomOeuvre(nom);
             this.prixOeuvre = prix;
             this.dateAchat = DateTime.Now;
             this.dateDerniereExpertise = DateTime.Now;
             this.etat = etat;
+            this.aExpertiser = false;
         }
-        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat, Artiste a) : base(nom,a)
+        public Oeuvre_Achetee(string nom, float prix, DateTime achat, DateTime expertise, Etat_Oeuvre etat, Artiste a) : base(nom, a)
         {
-            this.SetNomOeuvre(nom);
             this.prixOeuvre = prix;
             this.dateAchat = achat;
             this.dateDerniereExpertise = expertise;
             this.etat = etat;
-            this.SetArtiste(a);
+            this.aExpertiser = false;
         }
         public Oeuvre_Achetee(Oeuvre o) : base(o)
         {
-            this.SetArtiste(o.GetArtiste());
-            this.SetNomOeuvre(o.GetNomOeuvre());
-            
+            this.prixOeuvre = 0;
+            this.dateAchat = DateTime.Now;
+            this.dateDerniereExpertise = DateTime.Now;
+            this.etat = null;
+            this.aExpertiser = false;
         }
 
         // Accesseurs
@@ -167,7 +172,7 @@ namespace Musee
         // Méthode permettant de savoir si une oeuvre est à expertiser.
         public bool estAExpertiser()
         {
-            if (DateTime.Now > dateDerniereExpertise.AddDays(30)) 
+            if (DateTime.Now > dateDerniereExpertise.AddDays(30))
             {
                 this.aExpertiser = true;
             }
@@ -179,9 +184,9 @@ namespace Musee
 
         // Formatage une chaine avec les informations de l'oeuvre
         // A COMPLETER
-        public new string ToString()
+        public override string ToString()
         {
-            string aRetourner="";
+            string aRetourner = "";
             aRetourner += string.Format("\n\tAchetée le {0} et expertisée le {1}\n", this.dateAchat.ToShortDateString(), this.dateDerniereExpertise.ToShortDateString());
             aRetourner += string.Format("\tEtat {0}\n", this.etat.getLibelleEtatOeuvre());
             aRetourner += string.Format("\tPour {0} euros\n", this.prixOeuvre);
@@ -205,23 +210,18 @@ namespace Musee
         //  * Le prêteur sera initialisé à "inconnu"
         public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin) : base(nom)
         {
-            this.SetNomOeuvre(nom);
             this.preteur = preteur;
             this.date_debut = debut;
             this.date_fin = fin;
         }
-        public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin, Artiste a) : base(nom,a)
+        public Oeuvre_Pretee(string nom, string preteur, DateTime debut, DateTime fin, Artiste a) : base(nom, a)
         {
-            this.SetNomOeuvre(nom);
             this.preteur = preteur;
             this.date_debut = debut;
             this.date_fin = fin;
-            this.SetArtiste(a);
         }
         public Oeuvre_Pretee(Oeuvre o) : base(o)
         {
-            o.SetNomOeuvre(o.GetNomOeuvre());
-            o.SetArtiste(o.GetArtiste());
             this.preteur = "inconnu";
             this.date_debut = DateTime.Now;
             this.date_fin = DateTime.Now;
@@ -244,7 +244,7 @@ namespace Musee
 
         // Formatage une chaine avec les informations de l'oeuvre
         // A COMPLETER
-        public new string ToString()
+        public override string ToString()
         {
             string aRetourner = "";
             aRetourner += string.Format("\n\tPrêtée par {0} pour {1} jours\n", this.preteur, (this.date_fin - this.date_debut).Days);
@@ -298,13 +298,13 @@ namespace Musee
         // Retourne l’oeuvre dont le nom est passé en paramètre ou "null" sinon trouvée.
         public Oeuvre GetOeuvre(string nom)
         {
-            foreach (Oeuvre o in lesOeuvres) 
+            foreach (Oeuvre o in lesOeuvres)
             {
-                if (o.GetNomOeuvre() == nom) 
+                if (o.GetNomOeuvre() == nom)
                 {
                     return o;
                 }
-            
+
             }
             return null;
         }
@@ -400,7 +400,7 @@ namespace Musee
         // Retourne vrai si l’ajout a eu lieu, faux si l'œuvre existe déjà.
         public bool AjouteOeuvre(Oeuvre uneOeuvre)
         {
-            if (!ExisteOeuvre(uneOeuvre)) 
+            if (!ExisteOeuvre(uneOeuvre))
             {
                 return true;
             }
@@ -438,7 +438,7 @@ namespace Musee
         public double Ecart()
         {
             float total;
-            total = (float)ValeurSalle() - this.GetMontantAssurance(); 
+            total = (float)ValeurSalle() - this.GetMontantAssurance();
             return total;
         }
 
@@ -448,7 +448,7 @@ namespace Musee
             List<Oeuvre_Achetee> AExpertiser = new List<Oeuvre_Achetee>();
             foreach (Oeuvre_Achetee o in lesOeuvres)
             {
-                if (o.estAExpertiser()) 
+                if (o.estAExpertiser())
                 {
                     AExpertiser.Add(o);
                 }
@@ -458,10 +458,10 @@ namespace Musee
 
         // Retourne une chaîne avec les caractéristiques de la salle 
         // (nom et montant de l’assurance) et des œuvres avec artiste.
-        public override string  ToString()
+        public override string ToString()
         {
             string résultat = "";
-            résultat += ("La Salle "+this.nomSalle);
+            résultat += ("La Salle " + this.nomSalle);
             résultat += ("Contient des Oeuvre assurer pour un montant de " + this.montantAssurance + "$");
             return résultat;
         }
@@ -558,7 +558,7 @@ namespace Musee
 
                     }
                 }
-                dico.Add(s,LesOeuvresaExpertiser);
+                dico.Add(s, LesOeuvresaExpertiser);
             }
 
             return dico;
@@ -571,8 +571,8 @@ namespace Musee
             résultat += string.Format(" {0} \n", monMusee);
             résultat += string.Format("***********************************");
 
-            
-            foreach (Artiste a in lesArtistes) 
+
+            foreach (Artiste a in lesArtistes)
             {
                 résultat += a.GetNomArtiste();
                 résultat += string.Format("\n***********************************\n");
@@ -581,8 +581,8 @@ namespace Musee
             résultat += string.Format("\n***********************************\n");
             résultat += string.Format("Les Oeuvres");
             résultat += string.Format("\n***********************************\n");
-            
-            foreach (Oeuvre o in lesOeuvres) 
+
+            foreach (Oeuvre o in lesOeuvres)
             {
                 résultat += o.GetNomOeuvre();
                 résultat += string.Format("\n***********************************\n");
@@ -592,7 +592,7 @@ namespace Musee
             résultat += string.Format("\n***********************************\n");
             résultat += string.Format("Les Salles");
             résultat += string.Format("\n***********************************\n");
-            
+
             foreach (Salle s in lesSalles)
             {
                 résultat += s.GetNomSalle();
