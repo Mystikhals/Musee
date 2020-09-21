@@ -66,7 +66,7 @@ namespace Musee
     #endregion
 
     # region Classe OEUVRE
-    public class Oeuvre
+    public abstract class Oeuvre
     {
         // Attributs communs
         private string nomOeuvre;
@@ -506,15 +506,35 @@ namespace Musee
         // (+ surcharge : OEUVRE avec l'ARTISTE déjà défini)
         public string CreerOeuvre(Oeuvre o, Artiste a, Salle s)
         {
-            Oeuvre oeuvre = new Oeuvre(o.GetNomOeuvre(), a);
-            s.AjouteOeuvre(oeuvre);
-            return null;
+            if (o.GetType() == typeof(Oeuvre_Achetee))
+            {
+                Oeuvre_Achetee oeuvre = new Oeuvre_Achetee(o);
+                oeuvre.SetArtiste(a);
+                s.AjouteOeuvre(oeuvre);
+                return "L'oeuvre achetée " + oeuvre.GetNomOeuvre() + " a été ajoutée à la salle " + s.GetNomSalle();
+            }
+            else
+            {
+                Oeuvre_Pretee oeuvre = new Oeuvre_Pretee(o);
+                s.AjouteOeuvre(oeuvre);
+                oeuvre.SetArtiste(a);
+                return "L'oeuvre prêtée " + oeuvre.GetNomOeuvre() + " a été ajoutée à la salle " + s.GetNomSalle(); ;
+            }
         }
         public string CreerOeuvre(Oeuvre o, Salle s)
         {
-            Oeuvre oeuvre = new Oeuvre(o);
-            s.AjouteOeuvre(o);
-            return null;
+            if (o.GetType() == typeof(Oeuvre_Achetee))
+            {
+                Oeuvre_Achetee oeuvre = new Oeuvre_Achetee(o);
+                s.AjouteOeuvre(oeuvre);
+                return "L'oeuvre achetée " + oeuvre.GetNomOeuvre() + " a été ajoutée à la salle " + s.GetNomSalle();
+            }
+            else
+            {
+                Oeuvre_Pretee oeuvre = new Oeuvre_Pretee(o);
+                s.AjouteOeuvre(oeuvre);
+                return "L'oeuvre prêtée " + oeuvre.GetNomOeuvre() + " a été ajoutée à la salle " + s.GetNomSalle(); ;
+            }
         }
 
         // Accesseurs
@@ -605,3 +625,4 @@ namespace Musee
     }
     #endregion
 }
+
