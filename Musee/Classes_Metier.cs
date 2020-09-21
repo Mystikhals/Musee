@@ -477,6 +477,11 @@ namespace Musee
         private List<Salle> lesSalles;          // Liste des salles
         private List<Oeuvre> lesOeuvres;        // Liste des oeuvres;
 
+        public string MonMusee
+        {
+            get{return monMusee;}
+        }
+
         // Constructeur : création d'un musée
         public Musee(string nom)
         {
